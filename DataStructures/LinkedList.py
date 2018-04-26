@@ -1,4 +1,4 @@
-from DataStructures import Node
+from DataStructures import node
 
 
 class LinkedList:
@@ -8,13 +8,13 @@ class LinkedList:
 
     def insert(self, x):
         if self.first == None:
-            self.first = Node(x, None)
+            self.first = node(x, None)
             self.last = self.first
         elif self.last == self.first:
-            self.last = Node(x, None)
+            self.last = node(x, None)
             self.first.next = self.last
         else:
-            current = Node(x, None)
+            current = node(x, None)
             self.last.next = current
             self.last = current
 

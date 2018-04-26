@@ -1,11 +1,21 @@
-from DataStructures import Node
-from DataStructures import LinkedList
+from DataStructures.node import Node
+
 import copy
 
-class HillClimbing:
+initialState =     [[0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0]]
 
+
+class Board:
 
     def generateSuccessors(self, state):
+
+
         successors = {}
 
         for i in range(7):
@@ -21,5 +31,6 @@ class HillClimbing:
             for row in successors.get(z):
                 print(str(row) + "\n")
 
-
-
+    def getInitialState(self):
+        global initialState
+        return initialState

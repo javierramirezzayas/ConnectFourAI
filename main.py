@@ -1,25 +1,15 @@
 from HumanPlayer import HumanPlayer
-from HillClimbing import HillClimbing
+from Board import Board
 
-env = [[0,0,0,0,0,0,0],
-       [0,0,0,0,0,0,0],
-       [0,0,0,0,0,0,0],
-       [0,0,0,0,0,0,0],
-       [0,0,0,0,0,0,0],
-       [0,0,0,0,0,0,0],
-       [0,0,0,0,0,0,0]]
-
-print("Initial Connect Four Environment:")
-for i in env:
-    print(str(i)+"\n")
-
-
+board = Board()
 human = HumanPlayer()
-env = human.read(env)
 
-hill = HillClimbing()
-hill.generateSuccessors(env)
+print("Initial Connect Four Environment:\n")
+answer = input("Do you want to start first?: ")
 
-print("Connect Four after Human Player Choice")
-for i in env:
-    print(str(i)+"\n")
+if answer.lower() == "yes":
+    env = human.read(board.getInitialState())
+    board.generateSuccessors(env)
+else:
+    board.generateSuccessors(board.getInitialState())
+
