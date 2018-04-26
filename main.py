@@ -13,3 +13,4 @@ if answer.lower() == "yes":
 else:
     board.generateSuccessors(board.getInitialState())
 
+board.displayGameTree()

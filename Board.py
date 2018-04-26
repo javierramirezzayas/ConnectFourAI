@@ -1,36 +1,27 @@
-from DataStructures.node import Node
+from DataStructures.tree import Tree
 
 import copy
 
-initialState =     [[0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0],
-                    [0,0,0,0,0,0,0]]
-
-
 class Board:
 
+    def __init__(self):
+        self.T = Tree()
+        self.initialState = []
+
     def generateSuccessors(self, state):
-
-
-        successors = {}
-
+        global initialState
+        initialState = state
+        self.T.insertNode(state,None)
         for i in range(7):
             currentState = copy.deepcopy(state)
             for row in reversed(currentState):
                 if row[i] == 0:
                     row[i] = 2
                     break
-            successors[i] = copy.deepcopy(currentState)
-
-        for z in successors:
-            print("Successor state " + str(z) + '\n')
-            for row in successors.get(z):
-                print(str(row) + "\n")
+            self.T.insertNode(copy.deepcopy(currentState),state)
 
     def getInitialState(self):
-        global initialState
-        return initialState
+        return [[0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0]]
+
+    def displayGameTree(self):
+        self.T.display()

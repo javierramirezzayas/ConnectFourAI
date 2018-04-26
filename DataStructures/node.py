@@ -1,21 +1,18 @@
-# Copyright (C) by Brett Kromkamp 2011-2014 (brett@perfectlearn.com)
-# You Programming (http://www.youprogramming.com)
-# May 03, 2014
-
 
 class Node:
 
-    def __init__(self, identifier):
-        self.__identifier = identifier
-        self.__children = []
+    def __init__(self, p, v):
+        self.parent = p
+        self.value = v
 
-    @property
-    def identifier(self):
-        return self.__identifier
+    def getParent(self):
+        return self.parent()
 
-    @property
-    def children(self):
-        return self.__children
+    def getValue(self):
+        return self.value
 
-    def add_child(self, identifier):
-        self.__children.append(identifier)
+    def setParent(self, p):
+        self.parent = p
+
+    def setValue(self, v):
+        self.value = v
