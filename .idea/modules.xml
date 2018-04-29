@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ConnectFourAI.iml" filepath="$PROJECT_DIR$/.idea/ConnectFourAI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../PlayableConnectFour/.idea/PlayableConnectFour.iml" filepath="$PROJECT_DIR$/../PlayableConnectFour/.idea/PlayableConnectFour.iml" />
     </modules>
   </component>
 </project>
