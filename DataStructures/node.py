@@ -6,7 +6,7 @@ class Node:
         self.value = v
 
     def getParent(self):
-        return self.parent()
+        return self.parent
 
     def getValue(self):
         return self.value

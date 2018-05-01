@@ -9,8 +9,8 @@ answer = input("Do you want to start first?: ")
 
 if answer.lower() == "yes":
     env = human.read(board.getInitialState())
-    board.generateSuccessors(env)
+    board.buildBoardTree(env)
 else:
-    board.generateSuccessors(board.getInitialState())
+    board.buildBoardTree(board.getInitialState())
 
-board.displayGameTree()
+
