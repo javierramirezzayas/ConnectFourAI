@@ -1,4 +1,5 @@
 from DataStructures.tree import Tree
+from Minimax import Minimax
 
 import copy
 
@@ -10,51 +11,56 @@ class Board:
         self.utilityMap = {}
         self.player1 = 1
         self.player2 = 2
+        self.numberOfRows = 6
+        self.nextStateValue = []
 
     def buildBoardTree(self,state):
         self.T.insertNode(state, None)
-        self.generateNodes(self.T.getRoot(), self.player2)
+        self.generateNodes(self.T.getRoot(), self.player2,self.numberOfRows)
         childrenDepth2 = []
         childrenDepth3 = []
         childrenDepth4 = []
         childrenDepth1 = self.T.getChildren(self.T.getRoot())
-
+        print(len(childrenDepth1))
         for child in childrenDepth1:
-            self.generateNodes(child, self.player1)
+            if not self.T.getChildren(child):
+                self.generateNodes(child, self.player1,self.numberOfRows)
 
         for parent in childrenDepth1:
-            childList = self.T.getChildren(parent)
-            for child in childList:
+            for child in self.T.getChildren(parent):
                 childrenDepth2.append(child)
+        print(len(childrenDepth2))
         for child in childrenDepth2:
-            self.generateNodes(child, self.player2)
+            if not self.T.getChildren(child):
+                self.generateNodes(child, self.player2,self.numberOfRows)
 
         for parent in childrenDepth2:
-            childList = self.T.getChildren(parent)
-            for child in childList:
+            for child in self.T.getChildren(parent):
                 childrenDepth3.append(child)
+        print(len(childrenDepth3))
         for child in childrenDepth3:
-            self.generateNodes(child, self.player1)
+            if not self.T.getChildren(child):
+                self.generateNodes(child, self.player1,self.numberOfRows)
 
         for parent in childrenDepth3:
-            childList = self.T.getChildren(parent)
-            for child in childList:
+            for child in self.T.getChildren(parent):
                 childrenDepth4.append(child)
+        print(len(childrenDepth4))
 
         self.mapUtility(childrenDepth1)
         self.mapUtility(childrenDepth2)
         self.mapUtility(childrenDepth3)
         self.mapUtility(childrenDepth4)
 
-
-    def generateNodes(self, state, player):
-        for i in range(7):
+    def generateNodes(self, state, player,count):
+        if count >= 0:
             currentState = copy.deepcopy(state.getValue())
             for row in reversed(currentState):
-                if row[i] == 0:
-                    row[i] = player
+                if row[count] == 0:
+                    row[count] = player
                     break
             self.T.insertNode(copy.deepcopy(currentState), state.getValue())
+            self.generateNodes(state, player, count-1)
 
 
     def getInitialState(self):
@@ -65,18 +71,18 @@ class Board:
                 [0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0],]
 
-    def displayGameTree(self):
-        self.T.display()
+    def displayGameBoard(self):
+        for row in self.T.getRoot().getValue():
+            print(row)
+        print('********************************************')
 
     def mapUtility(self, successors):
         for node in successors:
             self.utilityMap[node] = self.getUtility(node)
 
     def getUtility(self, node):
-        utilityValue1 = self.getPlayerUtility(node,self.player1)
+        utilityValue1 = self.getPlayerUtility(node,self.player1)+2
         utilityValue2 = self.getPlayerUtility(node,self.player2)
-        print('Player 1 Utility: '+str(utilityValue1))
-        print('Player 2 Utility: '+str(utilityValue2))
         return utilityValue1+utilityValue2
 
     def getPlayerUtility(self, node, player):
@@ -162,3 +168,15 @@ class Board:
             start = start - 1
 
         return horizontalCounter + verticalCounter + diagonalCounter
+
+    def AIply(self):
+        minimax = Minimax(self.T,self.utilityMap)
+        nextState = minimax.minimax_decision(self.T.getRoot())
+        self.nextStateValue = nextState.getValue()
+
+
+    def resetTree(self):
+        self.T.clear()
+        del self.initialState
+        del self.utilityMap
+        return self.nextStateValue

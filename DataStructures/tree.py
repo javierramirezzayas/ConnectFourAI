@@ -71,5 +71,12 @@ class Tree:
                 selectedChildren.append(child)
         return selectedChildren
 
+    def children(self):
+        return self.children()
     def getNumberOfChildren(self):
         return self.numChildren
+
+    def clear(self):
+        del self.children
+        del self.numChildren
+        del self.root

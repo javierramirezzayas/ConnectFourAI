@@ -3,14 +3,38 @@ from Board import Board
 
 board = Board()
 human = HumanPlayer()
+nextState = []
+print('Welcome To Connect Four!!')
+print('Game Modes:\n')
+print('1. Player vs Player\n2. Player vs Computer\n')
 
-print("Initial Connect Four Environment:\n")
-answer = input("Do you want to start first?: ")
+answer = input('Select a Game Mode: ')
 
-if answer.lower() == "yes":
-    env = human.read(board.getInitialState())
-    board.buildBoardTree(env)
-else:
-    board.buildBoardTree(board.getInitialState())
+if answer == '2':
+    answer = input("Do you want to start first?: ")
+    if answer.lower() == "yes":
+            env = human.read(board.getInitialState())
+            board.buildBoardTree(env)
+            board.displayGameBoard()
+
+    else:
+        board.buildBoardTree(board.getInitialState())
+        board.displayGameBoard()
+
+    while True:
+        board.AIply()
+        nextState = board.resetTree()
+        del board
+        board = Board()
+        board.buildBoardTree(nextState)
+        board.displayGameBoard()
+        print('The Computer Has Made Its Move!')
+
+        nextState = human.read(nextState)
+        board.resetTree()
+        del board
+        board = Board()
+        board.buildBoardTree(nextState)
+        board.displayGameBoard()
 
 
