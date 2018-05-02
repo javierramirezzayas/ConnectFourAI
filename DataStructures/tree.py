@@ -7,76 +7,66 @@ class Tree:
         self.root = []
         self.children =[]
         self.numChildren = 0
+        self.depth1 = []
+        self.depth2 = []
+        self.depth3 = []
+        self.depth4 = []
 
-    def insertNode(self, value, parent):
-        node = Node(parent, value)
+    def insertNode(self, value, parent, tag):
+        node = Node(parent, value, tag)
         if parent is not None:
             self.children.append(node)
+            self.numChildren = self.numChildren + 1
         else:
             self.root = node
-        self.numChildren = self.numChildren + 1
+
+        if tag == '1':
+            self.depth1.append(node)
+        elif tag =='2':
+            self.depth2.append(node)
+        elif tag =='3':
+            self.depth3.append(node)
+        elif tag =='4':
+            self.depth4.append(node)
         return node
 
     def getRoot(self):
         return self.root
 
-    def display(self):
-        string0 = ''
-        string1 = ''
-        string2 = ''
-        string3 = ''
-        string4 = ''
-        string5 = ''
-        string6 = ''
-        count = 0
-        category = 0
-        print('Root Node:')
-        for row in self.root.getValue():
-            print(row)
-        for n in self.children:
-            row = n.getValue()
-            string0 = string0 + str(row[0]) + '   '
-            string1 = string1 + str(row[1]) + '   '
-            string2 = string2 + str(row[2]) + '   '
-            string3 = string3 + str(row[3]) + '   '
-            string4 = string4 + str(row[4]) + '   '
-            string5 = string5 + str(row[5]) + '   '
-            string6 = string6 + str(row[6]) + '   '
-            count = count + 1
-            if count==7:
-                if category==0:
-                    print('Max Nodes')
-                else:
-                    print('Min Nodes')
-                print(string0)
-                print(string1)
-                print(string2)
-                print(string3)
-                print(string4)
-                print(string5)
-                print(string6)
-                string0 = ''
-                string1 = ''
-                string2 = ''
-                string3 = ''
-                string4 = ''
-                string5 = ''
-                string6 = ''
-                count = 0
-                category = 1
-    def getChildren(self,node):
-        selectedChildren = []
-        for child in self.children:
-            if node.getValue() == child.getParent():
-                selectedChildren.append(child)
-        return selectedChildren
+    def getDepth1(self):
+        return self.depth1
+
+    def getDepth2(self):
+        return self.depth2
+
+    def getDepth3(self):
+        return self.depth3
+
+    def getDepth4(self):
+        return self.depth4
+
+    def getChildren(self, parentNode):
+        tag = parentNode.getTag()
+        selectedChild = []
+        if tag == '0':
+            childList = self.getDepth1()
+        elif tag == '1':
+            childList = self.getDepth2()
+        elif tag == '2':
+            childList = self.getDepth3()
+        elif tag == '3':
+            childList = self.getDepth4()
+
+        for c in childList:
+            if c.getParent() == parentNode.getValue():
+                selectedChild.append(c)
+        return selectedChild
+
+
+
 
     def children(self):
         return self.children()
+
     def getNumberOfChildren(self):
         return self.numChildren
-
-    def clear(self):
-        del self.children
-        del self.numChildren
-        del self.root

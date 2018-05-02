@@ -3,23 +3,21 @@ from DataStructures.node import Node
 
 class Minimax:
 
-    def __init__(self,tree,utilityMap):
-        self.MIN = 0
-        self.MAX = 0
+    def __init__(self,tree,utilityMap, utilityNodes):
         self.T = tree
         self.utilityMap = utilityMap
-        self.minimaxResult = Node(None,None)
-        self.utilityNodes = []
+        self.minimaxResult = Node(Node,Node,'')
+        self.utilityNodes = utilityNodes
+        self.tempUtilityValue = 0
 
     def isTerminal(self,state):
-        if not self.T.getChildren(state):
-            self.utilityNodes.append(state)
+        if state in self.utilityNodes:
             return True
         return False
 
     def minimax_decision(self,state):
-        utilityValue = self.maxValue(state)
-        self.minimaxResult = self.findSuccessorByUtilityValue(utilityValue)
+        self.maxValue(state)
+        self.findMinimaxResultNode()
         return self.minimaxResult
 
 
@@ -31,6 +29,10 @@ class Minimax:
         successors = self.T.getChildren(state)
         for s in successors:
             utilityValue = max(utilityValue,self.minValue(s))
+            if utilityValue != self.tempUtilityValue:
+                self.tempUtilityValue = utilityValue
+                self.minimaxResult = s
+
 
         return utilityValue
 
@@ -41,21 +43,37 @@ class Minimax:
         successors = self.T.getChildren(state)
         for s in successors:
             utilityValue = min(utilityValue,self.maxValue(s))
+            if utilityValue != self.tempUtilityValue:
+                self.tempUtilityValue = utilityValue
+                self.minimaxResult = s
         return utilityValue
 
-    def findSuccessorByUtilityValue(self, utilityValue):
+    def clear(self):
+        self.T = None
+        self.utilityMap = None
+        self.minimaxResult = None
+        self.utilityNodes = None
 
-        for node in self.utilityNodes:
-            if utilityValue == self.utilityMap[node]:
-                resultNode = node
+    def findMinimaxResultNode(self):
 
-        for depth in range(3):
-            parentValue = resultNode.getParent()
-            for child in self.T.children:
-                if child.getValue() == parentValue:
-                    resultNode = child
+        for node in self.T.getDepth3():
+            if self.minimaxResult.getParent() == node.getValue():
+                self.minimaxResult = node
+                break
 
-        return resultNode
+        for node in self.T.getDepth2():
+            if self.minimaxResult.getParent() == node.getValue():
+                self.minimaxResult = node
+                break
+
+        for node in self.T.getDepth1():
+            if self.minimaxResult.getParent() == node.getValue():
+                self.minimaxResult = node
+                break
+
+
+
+
 
 
 

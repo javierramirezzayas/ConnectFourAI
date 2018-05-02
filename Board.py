@@ -1,7 +1,7 @@
 from DataStructures.tree import Tree
 from Minimax import Minimax
-
 import copy
+
 
 class Board:
 
@@ -11,56 +11,43 @@ class Board:
         self.utilityMap = {}
         self.player1 = 1
         self.player2 = 2
-        self.numberOfRows = 6
         self.nextStateValue = []
+        self.utilityNodes = []
+        self.root = []
 
     def buildBoardTree(self,state):
-        self.T.insertNode(state, None)
-        self.generateNodes(self.T.getRoot(), self.player2,self.numberOfRows)
-        childrenDepth2 = []
-        childrenDepth3 = []
-        childrenDepth4 = []
-        childrenDepth1 = self.T.getChildren(self.T.getRoot())
-        print(len(childrenDepth1))
-        for child in childrenDepth1:
-            if not self.T.getChildren(child):
-                self.generateNodes(child, self.player1,self.numberOfRows)
+        self.root = self.T.insertNode(state, None,'0')
+        depth0 = []
 
-        for parent in childrenDepth1:
-            for child in self.T.getChildren(parent):
-                childrenDepth2.append(child)
-        print(len(childrenDepth2))
-        for child in childrenDepth2:
-            if not self.T.getChildren(child):
-                self.generateNodes(child, self.player2,self.numberOfRows)
+        depth0.append(self.root)
+        self.createBranches(depth0, self.player2, '1')
+        depth1 = self.T.getDepth1()
+        self.createBranches(depth1, self.player1, '2')
+        depth2 = self.T.getDepth2()
+        self.createBranches(depth2, self.player2, '3')
+        depth3 = self.T.getDepth3()
+        self.createBranches(depth3, self.player1, '4')
+        depth4 = self.T.getDepth4()
 
-        for parent in childrenDepth2:
-            for child in self.T.getChildren(parent):
-                childrenDepth3.append(child)
-        print(len(childrenDepth3))
-        for child in childrenDepth3:
-            if not self.T.getChildren(child):
-                self.generateNodes(child, self.player1,self.numberOfRows)
+        self.mapUtility(depth1)
+        self.mapUtility(depth2)
+        self.mapUtility(depth3)
+        self.mapUtility(depth4)
+        self.utilityNodes = depth4
 
-        for parent in childrenDepth3:
-            for child in self.T.getChildren(parent):
-                childrenDepth4.append(child)
-        print(len(childrenDepth4))
+    def createBranches(self, depthLevel, player, tag):
+        for node in depthLevel:
+            self.generateNodes(node, player, 6, tag)
 
-        self.mapUtility(childrenDepth1)
-        self.mapUtility(childrenDepth2)
-        self.mapUtility(childrenDepth3)
-        self.mapUtility(childrenDepth4)
-
-    def generateNodes(self, state, player,count):
+    def generateNodes(self, state, player,count,tag):
         if count >= 0:
             currentState = copy.deepcopy(state.getValue())
             for row in reversed(currentState):
                 if row[count] == 0:
                     row[count] = player
                     break
-            self.T.insertNode(copy.deepcopy(currentState), state.getValue())
-            self.generateNodes(state, player, count-1)
+            self.T.insertNode(copy.deepcopy(currentState), state.getValue(), tag)
+            self.generateNodes(state, player, count-1,tag)
 
 
     def getInitialState(self):
@@ -72,16 +59,15 @@ class Board:
                 [0,0,0,0,0,0,0],]
 
     def displayGameBoard(self):
-        for row in self.T.getRoot().getValue():
+        for row in self.root.getValue():
             print(row)
-        print('********************************************')
 
     def mapUtility(self, successors):
         for node in successors:
             self.utilityMap[node] = self.getUtility(node)
 
     def getUtility(self, node):
-        utilityValue1 = self.getPlayerUtility(node,self.player1)+2
+        utilityValue1 = self.getPlayerUtility(node,self.player1)
         utilityValue2 = self.getPlayerUtility(node,self.player2)
         return utilityValue1+utilityValue2
 
@@ -170,13 +156,11 @@ class Board:
         return horizontalCounter + verticalCounter + diagonalCounter
 
     def AIply(self):
-        minimax = Minimax(self.T,self.utilityMap)
-        nextState = minimax.minimax_decision(self.T.getRoot())
+        minimax = Minimax(self.T,self.utilityMap,self.utilityNodes)
+        nextState = minimax.minimax_decision(self.root)
         self.nextStateValue = nextState.getValue()
-
-
-    def resetTree(self):
-        self.T.clear()
-        del self.initialState
-        del self.utilityMap
+        minimax.clear()
+        print('*************************************************')
+        print('        The Computer Has Made Its Move!')
+        print('*************************************************')
         return self.nextStateValue
