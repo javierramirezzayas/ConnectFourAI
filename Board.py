@@ -29,9 +29,6 @@ class Board:
         self.createBranches(depth3, self.player1, '4')
         depth4 = self.T.getDepth4()
 
-        # self.mapUtility(depth1)
-        # self.mapUtility(depth2)
-        # self.mapUtility(depth3)
         self.mapUtility(depth4)
         self.utilityNodes = depth4
 
@@ -40,14 +37,16 @@ class Board:
             self.generateNodes(node, player, 6, tag)
 
     def generateNodes(self, state, player,count,tag):
+        stateIsNew = False
         if count >= 0:
             currentState = copy.deepcopy(state.getValue())
             for row in reversed(currentState):
                 if row[count] == 0:
                     row[count] = player
+                    stateIsNew = True
                     break
-
-            self.T.insertNode(copy.deepcopy(currentState), state.getValue(), tag)
+            if stateIsNew:
+                self.T.insertNode(copy.deepcopy(currentState), state.getValue(), tag)
             self.generateNodes(state, player, count-1,tag)
 
 
