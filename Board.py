@@ -29,9 +29,9 @@ class Board:
         self.createBranches(depth3, self.player1, '4')
         depth4 = self.T.getDepth4()
 
-        self.mapUtility(depth1)
-        self.mapUtility(depth2)
-        self.mapUtility(depth3)
+        # self.mapUtility(depth1)
+        # self.mapUtility(depth2)
+        # self.mapUtility(depth3)
         self.mapUtility(depth4)
         self.utilityNodes = depth4
 
@@ -46,6 +46,7 @@ class Board:
                 if row[count] == 0:
                     row[count] = player
                     break
+
             self.T.insertNode(copy.deepcopy(currentState), state.getValue(), tag)
             self.generateNodes(state, player, count-1,tag)
 
@@ -161,6 +162,6 @@ class Board:
         self.nextStateValue = nextState.getValue()
         minimax.clear()
         print('*************************************************')
-        print('        The Computer Has Made Its Move!')
+        print('*       The Computer Has Made Its Move!         *')
         print('*************************************************')
         return self.nextStateValue

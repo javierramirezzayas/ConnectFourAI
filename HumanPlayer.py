@@ -2,7 +2,7 @@ class HumanPlayer:
 
     def read(self,env):
         print('*************************************************')
-        print('                   Your Move!                    ')
+        print('*                  Your Move!                   *')
         print('*************************************************')
         userInput = int(input("\nChoose one of the 7 slots (0,1,2,3,4,5,6): "))
         while(userInput < 0 or userInput > 6):

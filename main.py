@@ -62,9 +62,9 @@ def printState(state):
 
 def displayTitle():
     print('*************************************************')
-    print('             Welcome To Connect Four!!           ')
+    print('*            Welcome To Connect Four!!          *')
     print('*************************************************')
-    print('                   Game Modes                    ')
+    print('*                  Game Modes                   *')
     print('*************************************************')
     print('1. Player vs Player')
     print('2. Player vs Computer')
