@@ -72,6 +72,7 @@ class Board:
         return utilityValue1+utilityValue2
 
     def getPlayerUtility(self, node, player):
+        player = str(player)
         string = ''
         fila = []
         columna = []
@@ -104,55 +105,83 @@ class Board:
         columna.append(column4)
         columna.append(column5)
         columna.append(column6)
-
+        repeat = False
         horizontalCounter = 0
         verticalCounter = 0
         diagonalCounter = 0
         for row in fila:
-            horizontalCounter = row.count(str(player)) + horizontalCounter
+            for ficha in row:
+                if ficha == player and repeat:
+                    horizontalCounter = 1 + horizontalCounter
+                elif ficha == player:
+                    repeat = True
+                else:
+                    repeat = False
         for col in columna:
-            verticalCounter = col.count(str(player)) + verticalCounter
+            for ficha in col:
+                if ficha == player and repeat:
+                    verticalCounter = 1 + verticalCounter
+                elif ficha == player:
+                    repeat = True
+                else:
+                    repeat = False
 
+        repeat = False
         start = 0
         for count in range(6):
             i = 5
             for j in range(start,7):
                 if i < 0 or (i == 5 and j == 4) or (i == 5 and j ==5) or (i == 5 and j==6): break
-                if fila[i][j] == player:
+                if fila[i][j] == player and repeat:
                     diagonalCounter = diagonalCounter + 1
+                elif ficha == fila[i][j]:
+                    repeat = True
+                else:
+                    repeat = False
                 i = i - 1
             start = start + 1
-
+        repeat = False
         start = 4
         for count in range(6):
             temp = start
             for j in range(7):
                 if temp < 0 or (temp == 0 and j == 0) or (temp == 2 and j ==0) or (temp ==1 and j==0): break
-                if fila[temp][j] == player:
+                if fila[temp][j] == player and repeat:
                     diagonalCounter = diagonalCounter + 1
+                elif ficha == fila[temp][j]:
+                    repeat = True
+                else:
+                    repeat = False
                 temp = temp - 1
             start = start -1
-
+        repeat = False
         start = 7
         for count in range(6):
             i = 5
             for j in reversed(range(start)):
                 if i < 0 or (i == 5 and j == 2) or (i == 5 and j ==1) or (i == 5 and j == 0): break
-                if fila[i][j] == player:
+                if fila[i][j] == player and repeat:
                     diagonalCounter = diagonalCounter + 1
+                elif ficha == fila[i][j]:
+                    repeat = True
+                else:
+                    repeat = False
                 i = i - 1
             start = start - 1
-
+        repeat = False
         start = 4
         for count in range(6):
             temp = start
             for j in reversed(range(7)):
                 if temp < 0 or (temp == 2 and j == 6) or (temp == 1 and j ==6) or (temp == 0 and j == 6): break
-                if fila[temp][j] == player:
+                if fila[temp][j] == player and repeat:
                     diagonalCounter = diagonalCounter + 1
+                elif ficha == fila[temp][j]:
+                    repeat = True
+                else:
+                    repeat = False
                 temp = temp - 1
             start = start - 1
-
         return horizontalCounter + verticalCounter + diagonalCounter
 
     def AIply(self):
