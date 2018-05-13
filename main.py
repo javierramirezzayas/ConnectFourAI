@@ -31,7 +31,7 @@ def main():
         answer = input("\nDo you want to start first?(yes/no): ")
         if answer.lower() == "yes":
             while True:
-                HumanChoice()
+                HumanChoice(PLAYER1_TOKEN)
                 board.buildBoardTree(nextState)
                 printState(nextState)
                 if winning_move(nextState, PLAYER1_TOKEN):
@@ -52,12 +52,42 @@ def main():
                 if winning_move(nextState, PLAYER1_TOKEN):
                     print("Player 1 Wins!!!")
                     break
-                HumanChoice()
+                HumanChoice(PLAYER1_TOKEN)
                 printState(nextState)
                 if winning_move(nextState, PLAYER2_TOKEN):
                     print("Player 2 Wins!!!")
                     break
                 CleanBoard()
+    elif answer == '1':
+        print('\nPlayer vs Player Mode')
+        for row in nextState:
+            print(row)
+        answer = input("\nPlayer 1: Do you want to start first?(yes/no): ")
+        if answer.lower() == 'yes':
+            while True:
+                HumanChoice(PLAYER1_TOKEN)
+                printState(nextState)
+                if winning_move(nextState, PLAYER1_TOKEN):
+                    print("Player 1 Wins!!!")
+                    break
+                HumanChoice(PLAYER2_TOKEN)
+                printState(nextState)
+                if winning_move(nextState, PLAYER2_TOKEN):
+                    print("Player 2 Wins!!!")
+                    break
+        else:
+            while True:
+                HumanChoice(PLAYER2_TOKEN)
+                printState(nextState)
+                if winning_move(nextState, PLAYER2_TOKEN):
+                    print("Player 2 Wins!!!")
+                    break
+                HumanChoice(PLAYER1_TOKEN)
+                printState(nextState)
+                if winning_move(nextState, PLAYER1_TOKEN):
+                    print("Player 1 Wins!!!")
+                    break
+
 
 
 # Check if there is a win
@@ -91,9 +121,9 @@ def ComputerChoice():
     global board, nextState
     nextState = board.AIply()
 
-def HumanChoice():
+def HumanChoice(playerPiece):
     global board, nextState, human
-    nextState = human.read(nextState)
+    nextState = human.read(nextState, playerPiece)
 
 def CleanBoard():
     global board
