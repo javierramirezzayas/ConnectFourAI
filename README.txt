@@ -3,7 +3,7 @@ Written in Python
 University of Puerto Rico at Mayaguez
 ICOM5015 Artificial Intelligence
 Author: Luis O. Vega Maisonet and Javier Ramirez Zayas
-Course Proyect
+Course Project
 Dr. Fernando Vega
 
 Instructions for program usage in Windows, Mac or Linux systems:
