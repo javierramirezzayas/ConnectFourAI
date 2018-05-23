@@ -43,6 +43,9 @@ def main():
                     print("Player 2 Wins!!!")
                     break
                 CleanBoard()
+                if checkBoardFull(nextState):
+                    print("Its a Tie!!!")
+                    break
         else:
             while True:
                 board.buildBoardTree(nextState)
@@ -58,6 +61,9 @@ def main():
                     print("Player 2 Wins!!!")
                     break
                 CleanBoard()
+                if checkBoardFull(nextState):
+                    print("Its a Tie!!!")
+                    break
     elif answer == '1':
         print('\nPlayer vs Player Mode')
         for row in nextState:
@@ -75,6 +81,9 @@ def main():
                 if winning_move(nextState, PLAYER2_TOKEN):
                     print("Player 2 Wins!!!")
                     break
+                if checkBoardFull(nextState):
+                    print("Its a Tie!!!")
+                    break
         else:
             while True:
                 HumanChoice(PLAYER2_TOKEN)
@@ -86,6 +95,9 @@ def main():
                 printState(nextState)
                 if winning_move(nextState, PLAYER1_TOKEN):
                     print("Player 1 Wins!!!")
+                    break
+                if checkBoardFull(nextState):
+                    print("Its a Tie!!!")
                     break
 
 
@@ -129,6 +141,13 @@ def CleanBoard():
     global board
     del board
     board = Board()
+
+def checkBoardFull(board):
+    for c in range(0,COL_COUNT):
+        for r in range(0,ROW_COUNT):
+            if board[r][c] == 0:
+                return True
+    return False
 
 def printState(state):
     for row in state:

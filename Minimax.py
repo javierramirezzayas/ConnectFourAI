@@ -32,9 +32,8 @@ class Minimax:
             if utilityValue != self.tempUtilityValue:
                 self.tempUtilityValue = utilityValue
                 self.minimaxResult = s
-
-
         return utilityValue
+
 
     def minValue(self,state):
         if self.isTerminal(state):

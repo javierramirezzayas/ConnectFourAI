@@ -32,6 +32,7 @@ class Board:
         self.mapUtility(depth4)
         self.utilityNodes = depth4
 
+
     def createBranches(self, depthLevel, player, tag):
         for node in depthLevel:
             self.generateNodes(node, player, 6, tag)
@@ -109,6 +110,8 @@ class Board:
         horizontalCounter = 0
         verticalCounter = 0
         diagonalCounter = 0
+        twoInRow = 0
+        threeInRow = 0
         for row in fila:
             for ficha in row:
                 if ficha == player and repeat:
@@ -182,7 +185,25 @@ class Board:
                     repeat = False
                 temp = temp - 1
             start = start - 1
-        return horizontalCounter + verticalCounter + diagonalCounter
+
+        for row in fila:
+            for count in range(0,4):
+                if row[count] == player and row[count+1] == player:
+                    twoInRow = twoInRow + 3
+                elif row[count+1] == player and row[count+2] == player:
+                    twoInRow = twoInRow + 3
+                elif row[count] == player and row[count+2] == player:
+                    twoInRow = twoInRow + 3
+            for count in range(0,3):
+                if row[count] == player and row[count+1] == player and row[count+2] == player:
+                    threeInRow = threeInRow + 100
+                elif row[count] == player and row[count+1] == player and row[count+3] == player:
+                    threeInRow = threeInRow + 100
+                elif row[count] == player and row[count+2] == player and row[count+3] == player:
+                    threeInRow = threeInRow + 100
+                elif row[count+1] == player and row[count+2] == player and row[count+3] == player:
+                    threeInRow = threeInRow + 100
+        return horizontalCounter + verticalCounter + diagonalCounter + twoInRow + threeInRow
 
     def AIply(self):
         minimax = Minimax(self.T,self.utilityMap,self.utilityNodes)
