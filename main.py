@@ -146,8 +146,8 @@ def checkBoardFull(board):
     for c in range(0,COL_COUNT):
         for r in range(0,ROW_COUNT):
             if board[r][c] == 0:
-                return True
-    return False
+                return False
+    return True
 
 def printState(state):
     for row in state:
