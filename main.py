@@ -104,6 +104,8 @@ def main():
 
 # Check if there is a win
 def winning_move(board, piece):
+    # for row in board:
+    #     print(row)
     # Check horizontal locations for win
     for c in range(COL_COUNT-3):
         for r in range(ROW_COUNT):
@@ -125,7 +127,7 @@ def winning_move(board, piece):
     # Check diagonal down for win
     for c in range(COL_COUNT - 3):
         for r in range(3, ROW_COUNT):
-            if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r+3][c+3] == piece:
+            if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
                 return True
 
 

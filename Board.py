@@ -163,8 +163,6 @@ class Board:
     def checkerC(self,counter,player,value):
         prev = player
         isConsecutive = False
-
-
         for ficha in value:
             if player == ficha and isConsecutive:
                 counter = counter + 1
