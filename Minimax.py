@@ -1,14 +1,13 @@
 from DataStructures.node import Node
-
+import random
 
 class Minimax:
 
     def __init__(self,tree,utilityMap, utilityNodes):
         self.T = tree
         self.utilityMap = utilityMap
-        self.minimaxResult = Node(Node,Node,'')
+
         self.utilityNodes = utilityNodes
-        self.tempUtilityValue = 0
 
     def isTerminal(self,state):
         if state in self.utilityNodes:
@@ -16,64 +15,56 @@ class Minimax:
         return False
 
     def minimax_decision(self,state):
-        self.maxValue(state)
-        self.findMinimaxResultNode()
-        return self.minimaxResult
+        depth4 = self.utilityNodes
+        depth3 = self.T.getDepth3()
+        depth2 = self.T.getDepth2()
+        depth1 = self.T.getDepth1()
+        minDepth3 = {}
+        maxDepth2 = {}
+        minDepth1 = {}
+        tempChild = []
+        min = 99999
+        max =-99999
+        for node in depth3:
+            childList = self.T.getChildren(node)
+            for child in childList:
+                # print('MIN: ' + str(self.utilityMap[child]))
+                if min > self.utilityMap[child]:
+                    min = self.utilityMap[child]
+                    # print('MIN Escogido: '+str(min))
+            minDepth3[node] = min
+
+        for node in depth2:
+            childList = self.T.getChildren(node)
+            for child in childList:
+                if max < minDepth3[child]:
+                    max = minDepth3[child]
+                    # print('MAX: ' + str(max))
+            maxDepth2[node] = max
+
+        max = -99999
+        min = 99999
+        for node in depth1:
+            childList = self.T.getChildren(node)
+            for child in childList:
+                if min > maxDepth2[child]:
+                    min = maxDepth2[child]
+                    # print('MIN: ' + str(min))
+            minDepth1[node] = min
+
+        posibleSol = []
+        for node in depth1:
+            if max <= minDepth1[node]:
+                max = minDepth1[node]
+                posibleSol.append(node)
 
 
-    def maxValue(self,state):
-        if self.isTerminal(state):
-            return self.utilityMap[state]
-
-        utilityValue = -9999
-        successors = self.T.getChildren(state)
-        for s in successors:
-            utilityValue = max(utilityValue,self.minValue(s))
-            if utilityValue != self.tempUtilityValue:
-                self.tempUtilityValue = utilityValue
-                self.minimaxResult = s
-        return utilityValue
-
-
-    def minValue(self,state):
-        if self.isTerminal(state):
-            return self.utilityMap[state]
-        utilityValue = 9999
-        successors = self.T.getChildren(state)
-        for s in successors:
-            utilityValue = min(utilityValue,self.maxValue(s))
-            if utilityValue != self.tempUtilityValue:
-                self.tempUtilityValue = utilityValue
-                self.minimaxResult = s
-        return utilityValue
+        length = len(posibleSol)-1
+        result = posibleSol[random.randint(0,length)]
+        return result
 
     def clear(self):
         self.T = None
         self.utilityMap = None
         self.minimaxResult = None
         self.utilityNodes = None
-
-    def findMinimaxResultNode(self):
-
-        for node in self.T.getDepth3():
-            if self.minimaxResult.getParent() == node.getValue():
-                self.minimaxResult = node
-                break
-
-        for node in self.T.getDepth2():
-            if self.minimaxResult.getParent() == node.getValue():
-                self.minimaxResult = node
-                break
-
-        for node in self.T.getDepth1():
-            if self.minimaxResult.getParent() == node.getValue():
-                self.minimaxResult = node
-                break
-
-
-
-
-
-
-
-

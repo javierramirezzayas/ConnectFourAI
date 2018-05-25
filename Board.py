@@ -68,142 +68,115 @@ class Board:
             self.utilityMap[node] = self.getUtility(node)
 
     def getUtility(self, node):
-        utilityValue1 = self.getPlayerUtility(node,self.player1)
-        utilityValue2 = self.getPlayerUtility(node,self.player2)
-        return utilityValue1+utilityValue2
+        AIthree = 0
+        AItwo = 0
+        Playerthree = 0
+        Playertwo = 0
+        Playerhorizontal = self.getHorizontalCount(node,self.player1)
+        Playervertical = self.getVerticalCount(node,self.player1)
 
-    def getPlayerUtility(self, node, player):
-        player = str(player)
-        string = ''
-        fila = []
-        columna = []
-        for row in node.getValue():
-            for ficha in row:
-                string = string + str(ficha)
-            fila.append(string)
-            string = ''
+        AIhorizontal = self.getHorizontalCount(node, self.player2)
+        AIvertical = self.getVerticalCount(node, self.player2)
 
-        column0 = ''
-        column1 = ''
-        column2 = ''
-        column3 = ''
-        column4 = ''
-        column5 = ''
-        column6 = ''
-        for row in node.getValue():
-            column0 = column0 + str(row[0])
-            column1 = column1 + str(row[1])
-            column2 = column2 + str(row[2])
-            column3 = column3 + str(row[3])
-            column4 = column4 + str(row[4])
-            column5 = column5 + str(row[5])
-            column6 = column6 + str(row[6])
+        if AIhorizontal == 2:
+            AIthree = AIthree +1
 
-        columna.append(column0)
-        columna.append(column1)
-        columna.append(column2)
-        columna.append(column3)
-        columna.append(column4)
-        columna.append(column5)
-        columna.append(column6)
-        repeat = False
+        if AIvertical == 2:
+            AIthree = AIthree + 1
+
+        if Playerhorizontal == 2:
+            Playerthree = Playerthree +1
+
+        if Playervertical == 2:
+            Playerthree = Playerthree + 1
+
+        if AIhorizontal == 1:
+            AItwo = AItwo +1
+
+        if AIvertical == 1:
+            AItwo = AItwo + 1
+
+        if Playerhorizontal == 1:
+            Playertwo = Playertwo +1
+
+        if Playervertical == 1:
+            Playertwo = Playertwo + 1
+
+        AIthree = AIthree*1000
+        AItwo = AItwo*10
+        Playerthree = Playerthree*1000
+        Playertwo = Playertwo*10
+
+        score = AIthree + AItwo - Playerthree - Playertwo
+        return score
+
+    def getHorizontalCount(self, node, player):
         horizontalCounter = 0
+        value = node.getValue()
+        for row in value:
+            horizontalCounter = horizontalCounter + self.checker(0,player,row)
+        return horizontalCounter
+
+    def getVerticalCount(self, node, player):
         verticalCounter = 0
-        diagonalCounter = 0
-        twoInRow = 0
-        threeInRow = 0
-        for row in fila:
-            for ficha in row:
-                if ficha == player and repeat:
-                    horizontalCounter = 1 + horizontalCounter
-                elif ficha == player:
-                    repeat = True
-                else:
-                    repeat = False
-        for col in columna:
-            for ficha in col:
-                if ficha == player and repeat:
-                    verticalCounter = 1 + verticalCounter
-                elif ficha == player:
-                    repeat = True
-                else:
-                    repeat = False
+        column0 = []
+        column1 = []
+        column2 = []
+        column3 = []
+        column4 = []
+        column5 = []
+        column6 = []
 
-        repeat = False
-        start = 0
-        for count in range(6):
-            i = 5
-            for j in range(start,7):
-                if i < 0 or (i == 5 and j == 4) or (i == 5 and j ==5) or (i == 5 and j==6): break
-                if fila[i][j] == player and repeat:
-                    diagonalCounter = diagonalCounter + 1
-                elif ficha == fila[i][j]:
-                    repeat = True
-                else:
-                    repeat = False
-                i = i - 1
-            start = start + 1
-        repeat = False
-        start = 4
-        for count in range(6):
-            temp = start
-            for j in range(7):
-                if temp < 0 or (temp == 0 and j == 0) or (temp == 2 and j ==0) or (temp ==1 and j==0): break
-                if fila[temp][j] == player and repeat:
-                    diagonalCounter = diagonalCounter + 1
-                elif ficha == fila[temp][j]:
-                    repeat = True
-                else:
-                    repeat = False
-                temp = temp - 1
-            start = start -1
-        repeat = False
-        start = 7
-        for count in range(6):
-            i = 5
-            for j in reversed(range(start)):
-                if i < 0 or (i == 5 and j == 2) or (i == 5 and j ==1) or (i == 5 and j == 0): break
-                if fila[i][j] == player and repeat:
-                    diagonalCounter = diagonalCounter + 1
-                elif ficha == fila[i][j]:
-                    repeat = True
-                else:
-                    repeat = False
-                i = i - 1
-            start = start - 1
-        repeat = False
-        start = 4
-        for count in range(6):
-            temp = start
-            for j in reversed(range(7)):
-                if temp < 0 or (temp == 2 and j == 6) or (temp == 1 and j ==6) or (temp == 0 and j == 6): break
-                if fila[temp][j] == player and repeat:
-                    diagonalCounter = diagonalCounter + 1
-                elif ficha == fila[temp][j]:
-                    repeat = True
-                else:
-                    repeat = False
-                temp = temp - 1
-            start = start - 1
+        for row in node.getValue():
+            column0.append(row[0])
+            column1.append(row[1])
+            column2.append(row[2])
+            column3.append(row[3])
+            column4.append(row[4])
+            column5.append(row[5])
+            column6.append(row[6])
+        verticalCounter = self.checkerC(0,player,column0) + verticalCounter
+        verticalCounter = self.checkerC(0, player, column1) + verticalCounter
+        verticalCounter = self.checkerC(0, player, column2) + verticalCounter
+        verticalCounter = self.checkerC(0, player, column3) + verticalCounter
+        verticalCounter = self.checkerC(0, player, column4) + verticalCounter
+        verticalCounter = self.checkerC(0, player, column5) + verticalCounter
+        verticalCounter = self.checkerC(0, player, column6) + verticalCounter
+        return verticalCounter
 
-        for row in fila:
-            for count in range(0,4):
-                if row[count] == player and row[count+1] == player:
-                    twoInRow = twoInRow + 3
-                elif row[count+1] == player and row[count+2] == player:
-                    twoInRow = twoInRow + 3
-                elif row[count] == player and row[count+2] == player:
-                    twoInRow = twoInRow + 3
-            for count in range(0,3):
-                if row[count] == player and row[count+1] == player and row[count+2] == player:
-                    threeInRow = threeInRow + 100
-                elif row[count] == player and row[count+1] == player and row[count+3] == player:
-                    threeInRow = threeInRow + 100
-                elif row[count] == player and row[count+2] == player and row[count+3] == player:
-                    threeInRow = threeInRow + 100
-                elif row[count+1] == player and row[count+2] == player and row[count+3] == player:
-                    threeInRow = threeInRow + 100
-        return horizontalCounter + verticalCounter + diagonalCounter + twoInRow + threeInRow
+    def checker(self,counter,player,value):
+        prev = player
+        isConsecutive = False
+        for ficha in value:
+            if player == ficha and isConsecutive:
+                counter = counter + 1
+            elif player == ficha:
+                isConsecutive = True
+            elif ficha != 0 and prev == player:
+                counter = 0
+                isConsecutive = False
+            elif ficha == 0 and prev != 0:
+                isConsecutive = False
+            prev = ficha
+        return counter
+
+    def checkerC(self,counter,player,value):
+        prev = player
+        isConsecutive = False
+
+
+        for ficha in value:
+            if player == ficha and isConsecutive:
+                counter = counter + 1
+            elif player == ficha:
+                isConsecutive = True
+            elif ficha != 0 and prev == player:
+                counter = 0
+                isConsecutive = False
+            elif ficha == 0 and prev != 0:
+                isConsecutive = False
+            prev = ficha
+        return counter
 
     def AIply(self):
         minimax = Minimax(self.T,self.utilityMap,self.utilityNodes)
