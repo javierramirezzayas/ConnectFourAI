@@ -31,7 +31,7 @@ class Minimax:
                 # print('MIN: ' + str(self.utilityMap[child]))
                 if min > self.utilityMap[child]:
                     min = self.utilityMap[child]
-                    # print('MIN Escogido: '+str(min))
+                    print('MIN Escogido: '+str(min))
             minDepth3[node] = min
 
         for node in depth2:

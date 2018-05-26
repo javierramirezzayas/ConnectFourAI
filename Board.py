@@ -70,6 +70,8 @@ class Board:
     def getUtility(self, node):
         AIthree = 0
         AItwo = 0
+        AIfour = 0
+        Playerfour = 0
         Playerthree = 0
         Playertwo = 0
         Playerhorizontal = self.getHorizontalCount(node,self.player1)
@@ -78,6 +80,22 @@ class Board:
         AIhorizontal = self.getHorizontalCount(node, self.player2)
         AIvertical = self.getVerticalCount(node, self.player2)
 
+        if AIhorizontal != 0 and AIvertical != 0:
+            print("AI horizontal: ", AIhorizontal)
+            print("AI vertical: ", AIvertical)
+
+        if AIhorizontal == 3:
+            AIfour = AIfour + 1.5
+
+        if AIvertical == 3:
+            AIfour = AIfour + 1
+
+        if Playerhorizontal == 3:
+            Playerfour = Playerfour + 2
+
+        if Playervertical == 3:
+            Playerfour = Playerfour + 2
+
         if AIhorizontal == 2:
             AIthree = AIthree +1
 
@@ -85,10 +103,10 @@ class Board:
             AIthree = AIthree + 1
 
         if Playerhorizontal == 2:
-            Playerthree = Playerthree +1
+            Playerthree = Playerthree +2
 
         if Playervertical == 2:
-            Playerthree = Playerthree + 1
+            Playerthree = Playerthree + 2
 
         if AIhorizontal == 1:
             AItwo = AItwo +1
@@ -97,17 +115,25 @@ class Board:
             AItwo = AItwo + 1
 
         if Playerhorizontal == 1:
-            Playertwo = Playertwo +1
+            Playertwo = Playertwo +2
 
         if Playervertical == 1:
-            Playertwo = Playertwo + 1
+            Playertwo = Playertwo + 2
 
+        AIfour = AIfour*10000
         AIthree = AIthree*1000
-        AItwo = AItwo*10
-        Playerthree = Playerthree*1000
-        Playertwo = Playertwo*10
+        AItwo = AItwo*100
+        Playerfour = Playerfour*1000000
+        Playerthree = Playerthree*100000
+        Playertwo = Playertwo*100
 
-        score = AIthree + AItwo - Playerthree - Playertwo
+        if AItwo == Playertwo:
+            AItwo = AItwo*2
+
+        if AIfour == Playerfour:
+            Playerfour = Playerfour*4
+
+        score = AIfour + AIthree + AItwo - Playerthree - Playertwo - Playerfour
         return score
 
     def getHorizontalCount(self, node, player):
@@ -135,6 +161,7 @@ class Board:
             column4.append(row[4])
             column5.append(row[5])
             column6.append(row[6])
+
         verticalCounter = self.checkerC(0,player,column0) + verticalCounter
         verticalCounter = self.checkerC(0, player, column1) + verticalCounter
         verticalCounter = self.checkerC(0, player, column2) + verticalCounter
@@ -149,7 +176,7 @@ class Board:
         isConsecutive = False
         for ficha in value:
             if player == ficha and isConsecutive:
-                counter = counter + 1
+                counter = counter + 2
             elif player == ficha:
                 isConsecutive = True
             elif ficha != 0 and prev == player:
@@ -165,7 +192,7 @@ class Board:
         isConsecutive = False
         for ficha in value:
             if player == ficha and isConsecutive:
-                counter = counter + 1
+                counter = counter + 3
             elif player == ficha:
                 isConsecutive = True
             elif ficha != 0 and prev == player:

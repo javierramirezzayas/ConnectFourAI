@@ -52,13 +52,13 @@ def main():
                 ComputerChoice()
                 CleanBoard()
                 printState(nextState)
-                if winning_move(nextState, PLAYER1_TOKEN):
-                    print("Player 1 Wins!!!")
+                if winning_move(nextState, PLAYER2_TOKEN):
+                    print("Player 2 Wins!!!")
                     break
                 HumanChoice(PLAYER1_TOKEN)
                 printState(nextState)
-                if winning_move(nextState, PLAYER2_TOKEN):
-                    print("Player 2 Wins!!!")
+                if winning_move(nextState, PLAYER1_TOKEN):
+                    print("Player 1 Wins!!!")
                     break
                 CleanBoard()
                 if checkBoardFull(nextState):
